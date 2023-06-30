@@ -1,11 +1,11 @@
 import Part from './Part';
 
-function Content({ part1, part2, part3 }) {
+function Content({ parts }) {
   return (
     <>
-      <Part part={part1} />
-      <Part part={part2} />
-      <Part part={part3} />
+      {parts.map(part => {
+        return <Part key={part.id} part={part} />
+      })}
     </>
   );
 }
