@@ -13,15 +13,33 @@ function App() {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
+
+  function getRandomIndex(arrLength) {
+    return Math.floor(Math.random() * arrLength);
+  }
+
+  function handleVoteClick() {
+    const votesCopy = [...votes];
+    votesCopy[selected]++;
+    setVotes(votesCopy);
+  }
 
   function handleNextClick() {
-    const randomIndex = Math.floor(Math.random() * anecdotes.length);
+    let randomIndex = getRandomIndex(anecdotes.length);
+
+    while (randomIndex === selected) {
+      randomIndex = getRandomIndex(anecdotes.length);
+    }
+
     setSelected(randomIndex);
   }
 
   return (
     <>
       <div>{anecdotes[selected]}</div>
+      <p>Has {votes[selected]} votes.</p>
+      <button onClick={handleVoteClick}>vote</button>
       <button onClick={handleNextClick}>next anecdote</button>
     </>
   );
