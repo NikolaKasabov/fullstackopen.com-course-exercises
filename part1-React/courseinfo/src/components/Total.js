@@ -1,5 +1,5 @@
 function Total({total}) {
-  return <p>Number of exercises {total}</p>;
+  return <strong>total of {total} exercises</strong>;
 }
 
 export default Total;
