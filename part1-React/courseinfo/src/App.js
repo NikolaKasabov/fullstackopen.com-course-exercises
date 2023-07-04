@@ -1,38 +1,31 @@
-import { nanoid } from 'nanoid';
-
-import Content from './components/Content';
-import Header from './components/Header';
-import Total from './components/Total';
+import Course from './components/Course';
 
 const App = () => {
   const course = {
+    id: 1,
     name: 'Half Stack application development',
     parts: [
       {
-        id: nanoid(),
         name: 'Fundamentals of React',
-        exercises: 10
+        exercises: 10,
+        id: 1,
       },
       {
-        id: nanoid(),
         name: 'Using props to pass data',
-        exercises: 7
+        exercises: 7,
+        id: 2,
       },
       {
-        id: nanoid(),
         name: 'State of a component',
-        exercises: 14
+        exercises: 14,
+        id: 3,
       },
     ],
   };
 
-  const total = course.parts.reduce((acc, cur) => acc + cur.exercises, 0);
-
   return (
     <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total total={total} />
+      <Course course={course} />
     </div>
   );
 }
