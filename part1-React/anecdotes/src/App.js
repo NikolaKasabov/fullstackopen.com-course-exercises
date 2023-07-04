@@ -19,6 +19,20 @@ function App() {
     return Math.floor(Math.random() * arrLength);
   }
 
+  function getMostVotesAnecdoteIndex() {
+    let mostVotes = 0;
+    let mostVotesIndex = 0;
+
+    for (let i = 1; i < votes.length; i++) {
+      if (votes[i] > mostVotes) {
+        mostVotes = votes[i];
+        mostVotesIndex = i;
+      }
+    }
+
+    return mostVotesIndex;
+  }
+
   function handleVoteClick() {
     const votesCopy = [...votes];
     votesCopy[selected]++;
@@ -37,10 +51,13 @@ function App() {
 
   return (
     <>
+      <h2>Anecdote of the day</h2>
       <div>{anecdotes[selected]}</div>
       <p>Has {votes[selected]} votes.</p>
       <button onClick={handleVoteClick}>vote</button>
       <button onClick={handleNextClick}>next anecdote</button>
+      <h3>Anecdote with most votes</h3>
+      <p>{anecdotes[getMostVotesAnecdoteIndex()]}</p>
     </>
   );
 }
