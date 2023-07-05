@@ -10,10 +10,19 @@ function App() {
   ]);
   const [newName, setNewName] = useState('');
 
+  function isNameAlreadyAdded(name) {
+    return persons.find(person => person.name === name);
+  }
+
   function handleSubmit(ev) {
     ev.preventDefault();
 
     if (!newName) return;
+
+    if (isNameAlreadyAdded(newName)) {
+      alert(`${newName} is already added to the phonebook.`);
+      return;
+    }
 
     const newPersons = [
       ...persons,
