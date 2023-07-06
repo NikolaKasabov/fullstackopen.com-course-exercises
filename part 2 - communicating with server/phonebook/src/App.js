@@ -43,6 +43,17 @@ function App() {
       });
   }
 
+  function handleDelete(id) {
+    personsService
+      .deletePerson(id)
+      .then(res => {
+        if (res.status === 200) {
+          const newPersons = persons.filter(person => person.id !== id);
+          setPersons(newPersons);
+        }
+      });
+  }
+
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()));
 
   return (
@@ -59,7 +70,7 @@ function App() {
       />
 
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} handleDelete={handleDelete} />
     </div>
   )
 }

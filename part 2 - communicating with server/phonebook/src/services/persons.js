@@ -17,8 +17,13 @@ function update(id, newObject) {
     .then(res => res.data);
 }
 
+function deletePerson (id) {
+  return axios.delete(`${baseUrl}/${id}`)
+}
+
 export default {
   getAll,
   create,
   update,
+  deletePerson,
 };
