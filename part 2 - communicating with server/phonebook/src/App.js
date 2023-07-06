@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { nanoid } from 'nanoid';
 import axios from 'axios';
 
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+
+const url = 'http://localhost:3001/persons';
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -12,8 +13,8 @@ function App() {
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
 
-  useEffect(() => { 
-    axios.get('http://localhost:3001/persons')
+  useEffect(() => {
+    axios.get(url)
       .then(response => {
         setPersons(response.data);
       });
@@ -31,18 +32,18 @@ function App() {
       return;
     }
 
-    const newPersons = [
-      ...persons,
-      {
-        id: nanoid(),
-        name: newName,
-        number: newNumber,
-      },
-    ];
+    const newPersonData = {
+      name: newName,
+      number: newNumber,
+    };
 
-    setPersons(newPersons);
-    setNewName('');
-    setNewNumber('');
+    axios.post(url, newPersonData)
+      .then(response => {
+        const newPerson = response.data;
+        setPersons([...persons, newPerson]);
+        setNewName('');
+        setNewNumber('');
+      })
   }
 
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()));
