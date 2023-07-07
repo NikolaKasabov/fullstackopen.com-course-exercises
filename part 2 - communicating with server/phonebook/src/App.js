@@ -4,12 +4,14 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import personsService from './services/persons';
+import Notification from './components/Notification';
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     personsService
@@ -39,6 +41,7 @@ function App() {
           .then(data => {
             const updatedPersons = persons.map(person => person.id === existingPerson.id ? personNewData : person);
             setPersons(updatedPersons);
+            showMessage(`Updated phone number for ${newName}.`);
             setNewName('');
             setNewNumber('');
           })
@@ -47,15 +50,17 @@ function App() {
       return;
     }
 
+    // add new person
     const newPersonData = {
       name: newName,
       number: newNumber,
     };
-    
+
     personsService
       .create(newPersonData)
       .then(newPerson => {
         setPersons([...persons, newPerson]);
+        showMessage(`Added ${newName}.`);
         setNewName('');
         setNewNumber('');
       });
@@ -72,11 +77,18 @@ function App() {
       });
   }
 
+  function showMessage(text, type = '') {
+    setMessage({ text, type });
+    setTimeout(() => setMessage(null), 3000);
+  }
+
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()));
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification text={message?.text} type={message?.type} />
+
       <Filter filter={filter} setFilter={setFilter} />
 
       <PersonForm
