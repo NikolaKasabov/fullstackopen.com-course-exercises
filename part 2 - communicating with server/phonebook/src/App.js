@@ -74,6 +74,10 @@ function App() {
           const newPersons = persons.filter(person => person.id !== id);
           setPersons(newPersons);
         }
+      })
+      .catch(err => {
+        const person = persons.find(person => person.id === id);
+        showMessage(`Information of ${person?.name} has already been removed from server.`, 'error');
       });
   }
 
