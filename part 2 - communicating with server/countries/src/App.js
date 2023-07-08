@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import './App.css';
 import fetchCountries from './services/fetchCountries';
+import SingleCountry from './components/SingleCountry';
+import CountriesList from './components/CountriesList';
 
 function App() {
   const [countries, setCountries] = useState([]);
@@ -25,6 +27,7 @@ function App() {
       .catch(err => console.log(err));
   }, []);
 
+  // filter countries on input change
   function handleSearchInput(ev) {
     const inputValue = ev.target.value;
     setFilter(inputValue);
@@ -32,6 +35,12 @@ function App() {
     setfilteredCountries(filteredCountriesData);
   }
 
+  // show the country with clicked 'show' button
+  function handleShowClick(country) {
+    setfilteredCountries([country]);
+  }
+
+  // displays countries/country data
   let result;
 
   if (filter.length > 0) {
@@ -39,33 +48,12 @@ function App() {
       result = <p>Too many matches, specify another filter.</p>;
     }
 
-    if (filteredCountries.length > 1 && filteredCountries.length < 10) {
-      result = (
-        <div>
-          {filteredCountries.map(country => <p key={country.name}>{country.name}</p>)}
-        </div>
-      );
+    if (filteredCountries.length > 1 && filteredCountries.length <= 10) {
+      result = <CountriesList countries={filteredCountries} handleShowClick={handleShowClick} />;
     }
 
     if (filteredCountries.length === 1) {
-      result = (
-        <>
-          <h2>{filteredCountries[0].name}</h2>
-          {filteredCountries[0].capital && <p>capital {filteredCountries[0].capital}</p>}
-          <p>area {filteredCountries[0].area}</p>
-          {filteredCountries[0].languages.length > 0 && (
-            <>
-              <strong>languages:</strong>
-              <ul>
-                {filteredCountries[0].languages.map(lang => <li key={lang}>{lang}</li>)}
-              </ul>
-            </>
-          )}
-          <p>
-            <img src={filteredCountries[0].flag} alt="country flag" style={{border: '1px solid black'}} />
-          </p>
-        </>
-      );
+      result = <SingleCountry country={filteredCountries[0]} />;
     }
   }
 
